@@ -3,6 +3,6 @@ package com.example;
 public enum Naipe {
     Hearts,
     Clubs,
-    Diamons,
+    Diamonds,
     Spades    
 }

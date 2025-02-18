@@ -19,13 +19,34 @@ public class Jogo {
     }
 
     public boolean acabou(){
-        if (jogador.getPontos() > 21) 
-            return true;
-        if (computador.getPontos() > 21) 
-            return true;
-        if (computador.parou() && jogador.parou()) 
-            return true;
-        return false;
+        return alguemEstourou() || computador.parou() && jogador.parou();
+    }
+
+    public String resultado(){
+        // Empatou
+        // Você ganhou
+        // Você Perdeu
+
+        if (jogadorEstourou() && computadorEstourou() || jogador.getPontos() == computador.getPontos()) {
+            return "Empatou";            
+        }
+
+        if (computadorEstourou() || !jogadorEstourou() && jogador.getPontos() > computador.getPontos()) {
+            return "Você ganhou";
+        }
+
+        return "Você Perdeu";
     }
     
+    private boolean jogadorEstourou(){
+        return jogador.getPontos() > 21;
+    }
+
+    private boolean computadorEstourou(){
+        return computador.getPontos() > 21;
+    }
+
+    private boolean alguemEstourou(){
+        return jogadorEstourou() || computadorEstourou();
+    }
 }
