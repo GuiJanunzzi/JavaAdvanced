@@ -4,7 +4,7 @@ interface NavBarProps{
 
 export default function NavBar(props: NavBarProps) {
     const { active } = props
-    const classActive = "border-b-3 border-pink-700"
+    const classActive = "border-b-3 border-primary"
 
 
   return(
