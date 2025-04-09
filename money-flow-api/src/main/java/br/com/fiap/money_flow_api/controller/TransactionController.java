@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fiap.money_flow_api.model.Transaction;
+import br.com.fiap.money_flow_api.repository.TransactionRepository;
 
 @RestController
 @RequestMapping("transactions")
 public class TransactionController {
 
     @Autowired
-    private class TransactionRepository repository;
+    private TransactionRepository repository;
 
     @GetMapping
     public List<Transaction> index(){

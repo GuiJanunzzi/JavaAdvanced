@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,6 +23,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.fiap.money_flow_api.model.Category;
 import br.com.fiap.money_flow_api.repository.CategoryRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 
 @RestController //component
@@ -35,12 +39,22 @@ public class CategoryController {
     //Listar todas as categorias
     //GET : 8080/categories -> 200 ok -> json
     @GetMapping
+    @Cacheable("categories")
     public List<Category> index(){
         return repository.findAll();
     }
 
     //Cadastrar categorias
     @PostMapping
+    @CacheEvict(value = "categories", allEntries = true)
+    @Operation(
+        summary = "Cadastrar categoria", 
+        description = "Insere uma nova categoria",
+        responses = {
+            @ApiResponse(responseCode = "201"),
+            @ApiResponse(responseCode = "400"),
+        }
+     )
     // @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<Category> create(@RequestBody @Valid Category category){
         log.info("Cadastrando..."+category.getName());
