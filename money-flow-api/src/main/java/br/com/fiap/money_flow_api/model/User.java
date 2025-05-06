@@ -2,14 +2,12 @@ package br.com.fiap.money_flow_api.model;
 
 import java.util.Collection;
 import java.util.List;
-
+ 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+ 
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,27 +26,29 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "USERS")
-public class User {
+public class User implements UserDetails {
+ 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
- 
+
     @Email
     private String email;
- 
+
     @NotBlank
     private String password;
- 
-    @Enumerated(EnumType.STRING)
+
+    @Pattern(regexp = "(ADMIN|USER)")
     private UserRole role;
- 
+
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities(){
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.toString()));
     }
- 
+
     @Override
     public String getUsername() {
         return email;
     }
+
 }
