@@ -8,12 +8,16 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.fiap.money_flow_api.model.Category;
 import br.com.fiap.money_flow_api.model.Transaction;
 import br.com.fiap.money_flow_api.model.TransactionType;
+import br.com.fiap.money_flow_api.model.User;
+import br.com.fiap.money_flow_api.model.UserRole;
 import br.com.fiap.money_flow_api.repository.CategoryRepository;
 import br.com.fiap.money_flow_api.repository.TransactionRepository;
+import br.com.fiap.money_flow_api.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 
 @Configuration
@@ -24,6 +28,16 @@ public class DatabaseSeeder {
 
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+ 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    DatabaseSeeder(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @PostConstruct
     public void init(){
@@ -72,5 +86,19 @@ public class DatabaseSeeder {
         }
 
         transactionRepository.saveAll(transactions);
+
+        userRepository.saveAll(List.of(
+                 User.builder()
+                         .email("janunzzi@fiap.com.br")
+                         .password(passwordEncoder.encode("12345"))
+                         .role(UserRole.ADMIN)
+                         .build(),
+ 
+                 User.builder()
+                         .email("maria@fiap.com.br")
+                         .password(passwordEncoder.encode("12345"))
+                         .role(UserRole.USER)
+                         .build()));
+ 
     }
 }

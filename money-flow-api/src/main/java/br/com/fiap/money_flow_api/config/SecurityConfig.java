@@ -33,22 +33,22 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(List.of(
-            User
-                .withUsername("janunzzi")
-                .password("$2a$12$KMGQ/BnybJ4XAT08EjAbdeZI8JYlSJOpMCYH5CEUDdWFiByNVRhUC")
-                .roles("ADMIN")
-                .build(),
-            User
-                .withUsername("maria")
-                .password("$2a$12$Xz9pw4cWpOJ5wIEkyuvwx.v52fV0IcMtH9SzUdc4W/fqa9EoKApda")
-                .roles("USER")
-                .build()
+    // @Bean
+    // UserDetailsService userDetailsService() {
+    //     return new InMemoryUserDetailsManager(List.of(
+    //         User
+    //             .withUsername("janunzzi")
+    //             .password("$2a$12$KMGQ/BnybJ4XAT08EjAbdeZI8JYlSJOpMCYH5CEUDdWFiByNVRhUC")
+    //             .roles("ADMIN")
+    //             .build(),
+    //         User
+    //             .withUsername("maria")
+    //             .password("$2a$12$Xz9pw4cWpOJ5wIEkyuvwx.v52fV0IcMtH9SzUdc4W/fqa9EoKApda")
+    //             .roles("USER")
+    //             .build()
         
-        ));
-    }
+    //     ));
+    // }
 
     @Bean
     PasswordEncoder passwordEncoder(){
