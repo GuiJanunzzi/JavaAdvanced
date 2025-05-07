@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.fiap.money_flow_api.model.Category;
+import br.com.fiap.money_flow_api.model.User;
 import br.com.fiap.money_flow_api.repository.CategoryRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -40,8 +42,8 @@ public class CategoryController {
     //GET : 8080/categories -> 200 ok -> json
     @GetMapping
     @Cacheable("categories")
-    public List<Category> index(){
-        return repository.findAll();
+    public List<Category> index(@AuthenticationPrincipal User user){
+        return repository.findByUser(user);
     }
 
     //Cadastrar categorias
@@ -55,17 +57,23 @@ public class CategoryController {
             @ApiResponse(responseCode = "400"),
         }
      )
+
     // @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<Category> create(@RequestBody @Valid Category category){
+    public ResponseEntity<Category> create(@RequestBody @Valid Category category, @AuthenticationPrincipal User user){
         log.info("Cadastrando..."+category.getName());
+        category.setUser(user);
         repository.save(category);
         return ResponseEntity.status(201).body(category);
     }
 
     // Detalhes da categoria
     @GetMapping("{id}")
-    public Category get(@PathVariable Long id){
+    public Category get(@PathVariable Long id, @AuthenticationPrincipal User user){
         log.info("Buscando Categoria... ID: "+id);
+        var cateory = getCategory(id);
+        if (!cateory.getUser().equals(user)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
         return getCategory(id);
     }
 

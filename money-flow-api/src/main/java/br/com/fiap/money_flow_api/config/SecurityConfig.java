@@ -30,8 +30,10 @@ public class SecurityConfig {
                         .requestMatchers("/transactions/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/h2-console/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()))
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .build();

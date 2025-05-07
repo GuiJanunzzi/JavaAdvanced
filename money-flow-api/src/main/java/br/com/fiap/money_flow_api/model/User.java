@@ -8,6 +8,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
  
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +20,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -26,6 +29,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "USERS")
+@EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
  
     @Id
@@ -38,7 +42,7 @@ public class User implements UserDetails {
     @NotBlank
     private String password;
 
-    @Pattern(regexp = "(ADMIN|USER)")
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @Override

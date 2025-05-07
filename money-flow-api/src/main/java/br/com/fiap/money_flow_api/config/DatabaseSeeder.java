@@ -41,11 +41,27 @@ public class DatabaseSeeder {
 
     @PostConstruct
     public void init(){
+        var janunzzi = User.builder()
+            .email("janunzzi@fiap.com.br")
+            .password(passwordEncoder.encode("12345"))
+            .role(UserRole.ADMIN)
+            .build();
+
+        var maria= User.builder()
+            .email("maria@fiap.com.br")
+            .password(passwordEncoder.encode("12345"))
+            .role(UserRole.USER)
+            .build();
+
+
+        userRepository.saveAll(List.of(janunzzi, maria));
+                 
+
         var categories = List.of(
-            Category.builder().name("Educação").icon("Book").build(),
-            Category.builder().name("Transporte").icon("Bus").build(),
-            Category.builder().name("Saúde").icon("Heart").build(),
-            Category.builder().name("Moradia").icon("House").build()
+            Category.builder().name("Moradia").icon("House").user(maria).build(),
+            Category.builder().name("Educação").icon("Book").user(janunzzi).build(),
+            Category.builder().name("Transporte").icon("Bus").user(janunzzi).build(),
+            Category.builder().name("Saúde").icon("Heart").user(janunzzi).build()
         );
 
         categoryRepository.saveAll(categories);
@@ -86,19 +102,6 @@ public class DatabaseSeeder {
         }
 
         transactionRepository.saveAll(transactions);
-
-        userRepository.saveAll(List.of(
-                 User.builder()
-                         .email("janunzzi@fiap.com.br")
-                         .password(passwordEncoder.encode("12345"))
-                         .role(UserRole.ADMIN)
-                         .build(),
- 
-                 User.builder()
-                         .email("maria@fiap.com.br")
-                         .password(passwordEncoder.encode("12345"))
-                         .role(UserRole.USER)
-                         .build()));
  
     }
 }
