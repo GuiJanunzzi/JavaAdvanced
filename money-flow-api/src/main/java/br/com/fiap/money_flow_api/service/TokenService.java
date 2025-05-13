@@ -16,7 +16,7 @@ import java.time.Instant;
  
  @Service
  public class TokenService {
-     private Instant expiresAt = LocalDateTime.now().plusMinutes(10).toInstant(ZoneOffset.ofHours(-3));
+     private Instant expiresAt = LocalDateTime.now().plusMinutes(120).toInstant(ZoneOffset.ofHours(-3));
      private Algorithm algorithm = Algorithm.HMAC256("secret");
  
      public Token createToken(User user){
@@ -37,7 +37,7 @@ import java.time.Instant;
          return User.builder()
                      .id(Long.valueOf(jwtVerified.getSubject()))
                      .email(jwtVerified.getClaim("email").toString())
-                     .role(UserRole.ADMIN)
+                     .role(UserRole.valueOf(role))
                      .build();
  
      }
