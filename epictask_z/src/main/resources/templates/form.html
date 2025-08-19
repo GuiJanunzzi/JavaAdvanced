@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dracula">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+    <title>Epic Task</title>
+</head>
+<body>
+
+<h1 class="text-primary text-2xl font-bold p-4">Epic Task</h1>
+
+
+<main class="grid grid-cols-1 gap-4 p-4 place-items-center ">
+    <form method="POST" class="w-full max-w-md" th:object="${task}">
+        <h2 class="text-secondary font-bold text-xl" th:text="#{task.new}">Nova Tarefa</h2>
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend" th:text="#{title}"></legend>
+            <input th:field="*{title}" th:errorclass="input-error" type="text" class="input" placeholder="título da tarefa" />
+            <p class="label text-error" th:errors="*{title}"></p>
+        </fieldset>
+
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend" th:text="#{description}"></legend>
+            <textarea th:field="*{description}" th:errorclass="textarea-error" class="textarea" placeholder="Descrição completa da tarefa"></textarea>
+            <p class="label text-error" th:errors="*{description}"></p>
+        </fieldset>
+
+        <fieldset class="fieldset">
+            <legend class="fieldset-legend" th:text="#{score}"></legend>
+            <input id="score-range" th:field="*{score}" type="range" min="0" max="100" value="40" class="range range-primary" />
+            <p id="score-label" class="label" th:text="*{score + ' pts'}">40 pts</p>
+        </fieldset>
+
+        <div>
+            <a href="/task" class="btn btn-neutral" th:text="#{cancel}"></a>
+            <button class="btn btn-primary" th:text="#{save}"></button>
+        </div>
+
+    </form>
+</main>
+
+<script>
+    document.querySelector("#score-range").addEventListener("input", e => {
+        document.querySelector("#score-label").textContent = e.target.value + ' pts'
+    })
+</script>
+
+</body>
+</html>
