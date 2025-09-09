@@ -42,8 +42,11 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-    public void drop(Long id, User user) {
+    public void drop(Long id, User user) throws IllegalAccessException {
         var task = getTask(id);
+        if(!task.getUser().equals(user)){
+            throw new IllegalAccessException("Você não é o dono da tarefa");
+        }
         task.setUser(null);
         taskRepository.save(task);
     }

@@ -65,7 +65,7 @@ public class TaskController {
     }
 
     @PutMapping("drop/{id}")
-    public String drop(@PathVariable Long id, @AuthenticationPrincipal OAuth2User principal ){
+    public String drop(@PathVariable Long id, @AuthenticationPrincipal OAuth2User principal ) throws IllegalAccessException {
         taskService.drop(id, userService.register(principal));
         return "redirect:/task";
     }
